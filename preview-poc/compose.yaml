@@ -1,0 +1,26 @@
+services:
+  clinic-preview:
+    build:
+      context: .
+      dockerfile: preview-poc/Dockerfile
+    image: clinic-booking-preview:poc
+    init: true
+    ports:
+      - "127.0.0.1:${PREVIEW_PORT:-8090}:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2)"
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 15s

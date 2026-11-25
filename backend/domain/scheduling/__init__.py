@@ -1,0 +1,1 @@
+"""Scheduling domain service boundary."""
